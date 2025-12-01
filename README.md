@@ -80,7 +80,7 @@ It integrates with:
 
 
 
-## 🧩 Key Features
+## Key Features
 
 
 
@@ -166,41 +166,6 @@ Each execution follows the same trusted steps:
 
 
 
-## Architecture
-
-
-
-
-
-AutoOps-Resolver-PowerShell/
-
-├── AutoOps.ps1 # Entry point / main script
-
-├── funcs/
-
-│ ├── network.ps1 # Ping, SSH, DNS, MAC/IP checks
-
-│ ├── redfish.ps1 # Power actions, BMC operations
-
-│ ├── cobbler.ps1 # PXE rebuild logic
-
-│ ├── utils.ps1 # Logging, parsing, helpers
-
-│ ├── sn_notes.ps1 # ServiceNow note formatting
-
-│ └── env.ps1 # Site config, credentials, constants
-
-├── logs/
-
-│ └── ... # Execution history (optional)
-
-└── README.md
-
-
-
-
-
-
 
 ### **Design Highlights**
 
@@ -208,25 +173,25 @@ AutoOps-Resolver-PowerShell/
 
 - **Modular Function-Based Architecture**  
 
-&nbsp; Each subsystem (network, Redfish, cobbler, SN notes) is its own module.
+ Each subsystem (network, Redfish, cobbler, SN notes) is its own module.
 
 
 
 - **Configuration-Driven**  
 
-&nbsp; All site-specific settings stored in a config module.
+ All site-specific settings stored in a config module.
 
 
 
 - **Non-destructive and safe**  
 
-&nbsp; Fails early on malformed hostnames, wrong sites, unreachable BMC, etc.
+ Fails early on malformed hostnames, wrong sites, unreachable BMC, etc.
 
 
 
 - **Reusable core functions**  
 
-&nbsp; Later used to build the C# Web AutoOps Resolver.
+ Later used to build the C# Web AutoOps Resolver.
 
 
 
