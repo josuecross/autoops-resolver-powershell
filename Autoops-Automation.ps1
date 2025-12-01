@@ -1,30 +1,11 @@
 ﻿# ===== GLOBALS =====
-$global:sshServer      = "scyspnet04.sc.intel.com" #Must be able to run /nfs/site/gen/adm/linuxset/hardware/firmware/support_scripts/redfish_mgmt_utility/redfish_mgmt.py 
-$global:cobblerServer      = "scy20894.sc.intel.com"
+$global:sshServer      = "server1.example.com" #Must be able to run /nfs/site/gen/adm/linuxset/hardware/firmware/support_scripts/redfish_mgmt_utility/redfish_mgmt.py 
+$global:cobblerServer      = "server1.example.com"
 
 
 # ==== login servers =====
 $global:sshServers = @(
-    'scy20745.zsc26.intel.com', 'scy20471.zsc19.intel.com', 'scy20230.zsc18.intel.com',
-    'scy0752.zsc2.intel.com', 'sc-login32.zsc98.intel.com',
-    'scy0328.zsc11.intel.com', 'scy20192.an.intel.com', 'scyv00104.sc.intel.com', 'sc-login28.sc.intel.com',
-    'scy20448.zsc28.intel.com', 'scy20566.zsc20.intel.com',  'scy1006.zsc16.intel.com',
-    'scy20625.zsc22.intel.com', 'scy0327.zsc11.intel.com',
-    'scce06253104.zsc15.intel.com', 'ascyv00006.sc.altera.com', 'scyv00101.sc.intel.com', 'scy20656.zsc23.intel.com',
-    'scy20310.hd.intel.com', 'scy1005.zsc16.intel.com', 'sc-login25.sc.intel.com', 'scyv00106.sc.intel.com',
-    'scy0094.zsc3.intel.com', 'scy20715.zsc25.intel.com', 'scy0789.zsc14.intel.com',
-    'scy20746.zsc26.intel.com', 'scy20231.zsc18.intel.com', 'scce06253103.sc.intel.com', 'scy0093.zsc3.intel.com',
-    'scy0788.zsc14.intel.com', 'scy0021.zsc7.intel.com', 'scyv00103.sc.intel.com', 'sc-login31.sc.intel.com',
-    'scy20193.an.intel.com', 'sc-login27.sc.intel.com', 'scy20449.zsc28.intel.com', 'scy0072.zsc98.intel.com',
-    'scy20685.zsc24.intel.com', 'scy0020.zsc7.intel.com',
-    'scy20626.zsc22.intel.com', 'scy0071.zsc98.intel.com', 'scy20470.zsc19.intel.com',
-    'scy0354.zsc12.intel.com', 'sc-login24.sc.intel.com',
-    'scy0116.zsc9.intel.com', 'sc-login29.sc.intel.com', 'scyv00105.sc.intel.com', 'scy0296.zsc2.intel.com',
-    'scy20565.zsc20.intel.com', 'scy20716.zsc25.intel.com', 'scy0353.zsc12.intel.com', 'scy0048.zsc10.intel.com',
-    'scy0115.zsc9.intel.com', 'scy0295.zsc2.intel.com',
-    'scy0949.zsc15.intel.com', 'scy0047.zsc10.intel.com', 'scy20655.zsc23.intel.com', 'scyv00102.sc.intel.com',
-    'sc-login30.zsc7.intel.com', 'scy0950.zsc15.intel.com', 'sc-login26.sc.intel.com',
-    'scy20686.zsc24.intel.com'
+   "server1.example.comserver1.example.com"
 )
 
 $global:ResolutionOrder = @('AcCycle' ,'PowerOn', 'CobblerCheck', 'BmcReset','PxeReset1')
