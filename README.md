@@ -273,7 +273,6 @@ Each execution follows the same trusted steps:
 
 
 
-```sh
 
 git clone https://github.com/yourusername/autoops-powershell.git
 
