@@ -1,0 +1,2 @@
+# autoops-resolver-powershell
+
