@@ -1,222 +1,189 @@
-# AutoOps Resolver – PowerShell Edition
-*A workflow automation toolkit built to accelerate server recovery and standardize troubleshooting across large-scale infrastructure.*
+# AutoOps Resolver — PowerShell Edition
 
----
+**Operator-focused infrastructure automation for repeatable server diagnostics, recovery workflows, and technical handoffs.**
 
-## Overview
+AutoOps Resolver started from a practical operations problem: investigating an unhealthy server often means repeating the same sequence of checks across host connectivity, DNS, management interfaces, metadata, and recovery tooling.
 
-AutoOps Resolver (PowerShell Edition) is the original automation system developed to reduce manual effort in handling offline or unhealthy servers.  
-It replaces repetitive "first-aid" troubleshooting steps with a consistent, fast, and reliable automated flow directly from the operator’s machine.
+This project brings those steps into a PowerShell workflow that validates the target, gathers evidence, runs the selected operation, and produces a consistent result that can be used by an engineer or added to a support record.
 
-This version was the first step toward a more advanced multi-user C#/.NET platform, and served as the foundation for validating automation logic, standardizing recovery steps, and proving the operational impact of automation.
+## What this project demonstrates
 
-It integrates with:
+- PowerShell automation for infrastructure operations
+- modular orchestration of external tools and scripts
+- Redfish / BMC management workflows
+- DNS, SSH, host, and management-path troubleshooting
+- PXE / Cobbler-oriented recovery logic
+- validation before state-changing actions
+- structured operator output and repeatable troubleshooting
+- integration of Windows-side automation with Linux/infrastructure tooling
 
-- ServiceNow (ticket context, output formatting)  
-- Redfish (power management and BMC operations)  
-- Cobbler/PXE rebuild flows  
-- Network diagnostics tools (ping, DNS, SSH)  
-- Internal command-line tools (NetBatch, SUM, ipmitool)  
+The project is useful as a portfolio example for **CloudOps, DevOps, infrastructure support, systems engineering, and automation roles**.
 
----
+## Problem the tool addresses
 
-## Technology Stack
+A server that appears “down” can fail at several different layers:
 
-### Languages and Tools
-
-- PowerShell 7  
-- Redfish API (curl-based and PowerShell wrapper)  
-- ipmitool / SUM / Redfish tools  
-- NetBatch (task-based execution)  
-- ServiceNow API (via CLI wrappers)  
-- Optional Tampermonkey UI integration  
-- Windows Terminal / Linux subsystem compatibility  
-
-### External Components
-
-- Python helpers (optional)  
-- Bash scripts (used in some flows)  
-- ServiceNow work-notes CLI (sn_cli.py)  
-- Redfish management utilities  
-
----
-
-## Key Features
-
-### 1. Automated Host Diagnostics
-
-- Ping and basic network tests  
-- SSH availability checks  
-- BMC/management interface reachability  
-- DNS validations for both host and BMC/FQDN  
-- MAC/IP verification against server metadata  
-
-### 2. Power Operations (Redfish)
-
-- Power On  
-- Power Reset  
-- AC Cycle  
-- Boot mode configuration  
-
-### 3. Cobbler/PXE Rebuild Automation
-
-- Legacy PXE restart  
-- Rebuild workflow initialization  
-- Automatic post-boot validation  
-
-### 4. BMC Tools
-
-- BMC reset  
-- BMC health checks  
-- Credential validation  
-- Network and firmware state inspection  
-
-### 5. Standardized Operator Workflow
-
-Each execution follows the same trusted steps:
-
-1. Validate hostname and site  
-2. Fetch metadata (BMC, MAC, IP)  
-3. Run connectivity and DNS tests  
-4. Execute the selected automation  
-5. Collect logs and output  
-6. Format notes for ServiceNow  
-
-### 6. ServiceNow Integration
-
-- Saves formatted work-notes  
-- Copy/paste-ready troubleshooting summary  
-- Consistent documentation for all agents  
-
----
-
-### Design Highlights
-
-- Modular function-based architecture.  
-- Configuration-driven behavior with site-specific settings in a config module.  
-- Non-destructive and safe: fails early on malformed hostnames, wrong sites, or unreachable BMC.  
-- Reusable core functions that later powered the C# Web AutoOps Resolver.  
-
----
-
-## Skills Demonstrated
-
-### Infrastructure Automation
-
-- Server bring-up automation  
-- Power control using Redfish API  
-- Integration with NetBatch job queues  
-- BMC-level operations  
-
-### PowerShell Engineering
-
-- Advanced functions and modules  
-- Parameter validation  
-- Orchestrating system commands  
-- Output formatting and pipelines  
-
-### Systems Troubleshooting
-
-- Network diagnostics (DNS, ping, SSH)  
-- BMC checks and resets  
-- Cobbler/PXE rebuild workflows  
-- Host metadata verification  
-
-### Automation Design
-
-- Modular reusable scripts  
-- Input validation and exception safety  
-- Clean logging and service outputs  
-- Scalable structure reused by the web version  
-
-### ServiceNow and Operations Integration
-
-- Automated work-notes  
-- Standardized troubleshooting  
-- Consistent documentation across the team  
-
----
-
-## Getting Started
-
-### 1. Clone the Repository
-
-```sh
-git clone https://github.com/yourusername/autoops-powershell.git
-cd autoops-powershell
+```text
+Operator request
+      |
+      v
+Target validation
+      |
+      +--> DNS / hostname checks
+      +--> host reachability
+      +--> SSH path
+      +--> BMC / management interface
+      +--> metadata consistency
+      |
+      v
+Selected diagnostic or recovery action
+      |
+      v
+Post-action validation
+      |
+      v
+Operator summary / handoff notes
 ```
 
-### 2. Configure Environment Variables
+The goal is not to treat every failure as the same problem. The workflow helps separate network, operating-system, management-plane, metadata, and recovery-path issues before an engineer decides what to do next.
 
-Set site credentials or metadata paths:
+## Core capabilities
 
-```powershell
-$env:SITE = "sc"
-$env:CREDENTIALS_PATH = "$HOME/.autoops/creds.json"
+### Host and network diagnostics
+
+- hostname / site validation
+- host reachability checks
+- SSH availability checks
+- DNS validation
+- BMC / management-interface reachability
+- host and management metadata checks
+
+### Management-plane operations
+
+The script contains workflows around server-management tooling such as:
+
+- Redfish-based power operations
+- BMC restart / health workflows
+- boot and recovery operations
+- management-interface validation
+
+State-changing actions are treated differently from read-only diagnostics. The workflow validates context first and expects follow-up checks after execution.
+
+### PXE / Cobbler recovery paths
+
+The project includes logic for infrastructure recovery workflows that use PXE/Cobbler-style tooling, including checks around the selected target and post-action state.
+
+### Operator workflow
+
+A typical execution follows this pattern:
+
+1. Validate the requested target and context.
+2. Gather host and management metadata.
+3. Check network and access paths.
+4. Execute the requested diagnostic or recovery operation.
+5. Capture output and failures.
+6. Validate the resulting state where possible.
+7. Produce a concise technical summary for the next action or handoff.
+
+## Technology
+
+- **PowerShell 7**
+- **Redfish APIs / management utilities**
+- **SSH and remote command execution**
+- **DNS / network diagnostics**
+- **BMC tooling**
+- **PXE / Cobbler workflows**
+- **Python and Bash helpers** where appropriate
+- browser-side support tooling through **Tampermonkey** for related operator workflows
+
+## Engineering decisions
+
+### Validate before changing state
+
+A state-changing action should not be the first diagnostic step. The workflow checks the target and available evidence before invoking recovery operations.
+
+### Separate execution from outcome
+
+A command returning successfully does not necessarily mean the server or service is healthy. AutoOps keeps execution evidence separate from the postcondition that the operator actually cares about.
+
+### Keep functions modular
+
+The PowerShell implementation uses focused functions for different checks and operations so that failures can be interpreted individually and the same logic can be reused in other interfaces.
+
+### Preserve human control
+
+This is an operator tool, not an autonomous remediation system. The script supports investigation and controlled actions, while the engineer remains responsible for choosing the appropriate operation and validating the result.
+
+## Repository structure
+
+The main implementation is contained in:
+
+```text
+Autoops-Automation.ps1
 ```
 
-### 3. Run the Tool
+The script includes the orchestration and helper functions used for diagnostics, management operations, browser-support setup, and sequential recovery logic.
 
-```powershell
-./AutoOps.ps1 -Server "server123.sc.domain" -Action PowerOn
+## Example workflow
+
+A simplified operator scenario might look like:
+
+```text
+Target: server123.example.com
+
+[Validation]
+Hostname accepted
+Site/context accepted
+
+[Connectivity]
+Host reachable: no
+DNS resolution: yes
+BMC reachable: yes
+
+[Management]
+Power state retrieved successfully
+
+[Action]
+Operator selects approved recovery step
+
+[Validation]
+Host path checked again
+Result summarized for follow-up
 ```
 
-Supported actions include:
+The exact commands and environment-specific values depend on the infrastructure where the tool is adapted.
 
-- PowerOn  
-- ACCycle  
-- BMCReset  
-- PXERebuild  
-- CheckAll  
-- NetworkCheck  
+## Security and portability
 
-### 4. View Execution Output
+The public repository uses sanitized/example infrastructure values. Real credentials, internal production endpoints, and environment-specific secrets should be supplied outside source control.
 
-Output is displayed on screen and can optionally be saved to:
+For reuse in another environment, the key adaptation points are:
 
-```
-./logs/YYYY-MM-DD/
-```
+- target naming rules;
+- management endpoints;
+- authentication / credentials;
+- metadata sources;
+- approved recovery operations;
+- post-action health checks.
 
----
+## Related project
 
-## Example Output (Simplified)
+The same automation problem was later explored through a C#/.NET web interface in the **Web AutoOps Resolver** project, where request handling, background execution, status tracking, and operator-facing presentation become part of the design.
 
-```
-=== AutoOps – Server Recovery ===
+## Skills demonstrated
 
-Host: scce01120103
-BMC: 10.119.253.180
+- infrastructure automation
+- PowerShell engineering
+- troubleshooting across host / network / management layers
+- API and command-line integration
+- safe automation design
+- recovery validation
+- operational documentation
+- cross-platform systems work
 
-[Network]
-Ping reachable
-DNS correct
-SSH reachable
-BMC reachable via Redfish
+## Author
 
-[Action: PowerOn]
-Redfish: PowerState = On
-Boot sequence OK
-
-[Summary]
-Server is now online and reachable.
-Notes saved for ServiceNow.
-```
-
----
-
-## License
-
-MIT License.
-
----
-
-## Contact
-
-Josue David Cruz Lopez  
-Email: cruzlopez.josuedavid96@gmail.com  
-LinkedIn: https://linkedin.com/in/josue-david-c
-
----
-
-This PowerShell edition demonstrates my ability to automate complex operational workflows, integrate system-level APIs, and reduce manual troubleshooting time through clean, modular automation.
+**Josue David Cruz Lopez**  
+Costa Rica  
+GitHub: [@josuecross](https://github.com/josuecross)  
+LinkedIn: [josue-david-c](https://www.linkedin.com/in/josue-david-c/)
